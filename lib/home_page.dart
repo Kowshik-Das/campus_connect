@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'admin_notice_page.dart';
-import 'login_page.dart'; // Make sure to import your LoginPage here
+import 'login_page.dart';
+import 'class_schedule_page.dart'; // ✅ Import the new page here
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -55,6 +56,19 @@ class HomePage extends StatelessWidget {
             '📢 Notices',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
+          const SizedBox(height: 10),
+
+          // ✅ New button for class schedule
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ClassSchedulePage()),
+              );
+            },
+            child: const Text('Go to Class Schedule'),
+          ),
+
           const SizedBox(height: 10),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
