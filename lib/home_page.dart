@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'admin_notice_page.dart';
 import 'login_page.dart';
-import 'class_schedule_page.dart'; // ✅ Import the new page here
+import 'class_schedule_page.dart'; // Import the new page here
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   bool isAdmin(String email) {
-    // 🔐 Add your admin email here
+    //  admin email here
     const adminEmails = ['daskowshik49@gmail.com'];
     return adminEmails.contains(email);
   }
