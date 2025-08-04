@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'admin_notice_page.dart';
-import 'login_page.dart';
-import 'class_schedule_page.dart'; // Import the new page here
+import 'class_schedule_page.dart';
+import 'login_page.dart'; // for logout redirect
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   bool isAdmin(String email) {
-    //  admin email here
-    const adminEmails = ['daskowshik49@gmail.com'];
+    // List of admin emails
+    const adminEmails = [
+      'daskowshik49@gmail.com',
+      '223005812@eastdelta.edu.bd',
+    ];
+
     return adminEmails.contains(email);
   }
 
@@ -20,34 +25,69 @@ class HomePage extends StatelessWidget {
     final bool showAdminPanel = user != null && isAdmin(user.email!);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Campus Connect'),
-        actions: [
-          if (showAdminPanel)
-            IconButton(
-              icon: const Icon(Icons.admin_panel_settings),
-              tooltip: 'Go to Admin Panel',
-              onPressed: () {
+      appBar: AppBar(title: const Text('Campus Connect')),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(color: Colors.blue),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.school, color: Colors.white, size: 40),
+                  const SizedBox(height: 8),
+                  Text(
+                    user?.email ?? "No user",
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.campaign),
+              title: const Text('Notice Board'),
+              onTap: () {
+                Navigator.pop(context); // stays on the same page
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.schedule),
+              title: const Text('Class Schedule'),
+              onTap: () {
+                Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => AdminNoticePage()),
+                  MaterialPageRoute(builder: (_) => const ClassSchedulePage()),
                 );
               },
             ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-
-              // Use pushAndRemoveUntil to clear the backstack and go to LoginPage
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => LoginPage()),
-                (Route<dynamic> route) => false,
-              );
-            },
-          ),
-        ],
+            if (showAdminPanel)
+              ListTile(
+                leading: const Icon(Icons.admin_panel_settings),
+                title: const Text('Admin Panel'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AdminNoticePage()),
+                  );
+                },
+              ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => LoginPage()),
+                  (route) => false,
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: [
@@ -56,19 +96,6 @@ class HomePage extends StatelessWidget {
             '📢 Notices',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 10),
-
-          // ✅ New button for class schedule
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => ClassSchedulePage()),
-              );
-            },
-            child: const Text('Go to Class Schedule'),
-          ),
-
           const SizedBox(height: 10),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
