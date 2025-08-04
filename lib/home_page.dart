@@ -4,18 +4,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'admin_notice_page.dart';
 import 'class_schedule_page.dart';
-import 'login_page.dart'; // for logout redirect
+import 'login_page.dart';
+import 'profile_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   bool isAdmin(String email) {
-    // List of admin emails
     const adminEmails = [
       'daskowshik49@gmail.com',
       '223005812@eastdelta.edu.bd',
     ];
-
     return adminEmails.contains(email);
   }
 
@@ -48,7 +47,7 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.campaign),
               title: const Text('Notice Board'),
               onTap: () {
-                Navigator.pop(context); // stays on the same page
+                Navigator.pop(context); // stay on the same page
               },
             ),
             ListTile(
@@ -59,6 +58,17 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ClassSchedulePage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('My Profile'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfilePage()),
                 );
               },
             ),
