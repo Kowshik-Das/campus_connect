@@ -6,6 +6,7 @@ import 'admin_notice_page.dart';
 import 'class_schedule_page.dart';
 import 'login_page.dart';
 import 'profile_page.dart';
+import 'TaskPage.dart'; 
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -47,7 +48,7 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.campaign),
               title: const Text('Notice Board'),
               onTap: () {
-                Navigator.pop(context); // stay on the same page
+                Navigator.pop(context); // stay on same page
               },
             ),
             ListTile(
@@ -58,6 +59,17 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ClassSchedulePage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.check_circle_outline),
+              title: const Text('To-Do List'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const TaskPage()),
                 );
               },
             ),
